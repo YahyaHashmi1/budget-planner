@@ -6,3 +6,15 @@ uvicorn[standard]>=0.54.0
 sqlalchemy
 psycopg[binary]
 alembic
+
+# --- Useful commands---
+# Start Docker containers: docker-compose up -d
+# Stop Docker containers: docker-compose down
+# Delete Docker containers: docker-compose down -v
+
+# Run Postgres commands in Docker: docker exec -it paycheck-tracker-db psql -U paycheck_user -d paycheck_tracker
+# List tables: \dt
+# List columns: \d table_name
+
+# Generate migration: alembic revision --autogenerate -m "migration message"
+# Push migration: alembic upgrade head
