@@ -18,3 +18,6 @@ alembic
 
 # Generate migration: alembic revision --autogenerate -m "migration message"
 # Push migration: alembic upgrade head
+# Display current migration: alembic current
+# Point to previous migration: alembic downgrade -1
+# Discard current migration and point to specific migration: alembic stamp --purge <revision_id>
