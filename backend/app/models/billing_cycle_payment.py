@@ -2,6 +2,7 @@
 import uuid
 from datetime import datetime
 from decimal import Decimal
+from sqlalchemy import UniqueConstraint
 
 from sqlalchemy import (
     DateTime, ForeignKey, Numeric, Uuid, func
@@ -14,12 +15,20 @@ from app.database import Base
 class BillingCyclePayment(Base):
     __tablename__ = "billing_cycle_payments"
 
+    __table_args__ = (
+        UniqueConstraint(
+            "billing_cycle_id",
+            "paycheck_id",
+            name="uq_billing_cycle_payment_paycheck",
+        ),
+    )
+
     id: Mapped[uuid.UUID] = mapped_column(
         Uuid, primary_key=True, default=uuid.uuid4
     )
     billing_cycle_id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, ForeignKey("billing_cycles.id"), nullable=False
-    )
+    Uuid, ForeignKey("billing_cycles.id", ondelete="CASCADE"), nullable=False,
+)
     paycheck_id: Mapped[uuid.UUID] = mapped_column(
         Uuid, ForeignKey("paychecks.id"), nullable=False
     )

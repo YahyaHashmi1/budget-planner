@@ -1,10 +1,10 @@
 
 import uuid
-from datetime import datetime
+from datetime import datetime, date
 from decimal import Decimal
 
 from sqlalchemy import (
-    DateTime, ForeignKey, Numeric, String, Uuid, func
+    DateTime, Date, ForeignKey, Numeric, String, Uuid, func
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -28,6 +28,9 @@ class ExpenseItem(Base):
     )
     amount: Mapped[Decimal] = mapped_column(
         Numeric(10, 2), nullable=False
+    )
+    spent_on: Mapped[date] = mapped_column(
+        Date, nullable=False,
     )
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),

@@ -6,7 +6,7 @@ from enum import Enum
 
 from sqlalchemy import (
     DateTime, Enum as SQLEnum, ForeignKey,
-    Numeric, Uuid, func
+    Numeric, Uuid, func, Index, text
 )
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -21,23 +21,25 @@ class BillingCycleStatus(str, Enum):
 class BillingCycle(Base):
     __tablename__ = "billing_cycles"
 
+    __table_args__ = (
+        Index(
+            "uq_one_open_cycle_per_category",
+            "category_id",
+            unique=True,
+            postgresql_where=text(
+                "status = 'FIRST_HALF_PAID'"
+            ),
+        ),
+    )
+
     id: Mapped[uuid.UUID] = mapped_column(
         Uuid, primary_key=True, default=uuid.uuid4
     )
     category_id: Mapped[uuid.UUID] = mapped_column(
         Uuid, ForeignKey("expense_categories.id"), nullable=False
     )
-    user_id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, ForeignKey("users.id"), nullable=False
-    )
     total_amount: Mapped[Decimal] = mapped_column(
         Numeric(10, 2), nullable=False
-    )
-    first_pay_period_id: Mapped[uuid.UUID] = mapped_column(
-        Uuid, ForeignKey("paychecks.id"), nullable=False
-    )
-    second_pay_period_id: Mapped[uuid.UUID | None] = mapped_column(
-        Uuid, ForeignKey("paychecks.id"), nullable=True
     )
     status: Mapped[BillingCycleStatus] = mapped_column(
         SQLEnum(BillingCycleStatus, name="billing_cycle_status"),
