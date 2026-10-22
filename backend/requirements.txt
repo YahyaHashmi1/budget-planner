@@ -1,6 +1,7 @@
 # --- Web framework ---
 fastapi>=0.143.0
 uvicorn[standard]>=0.54.0
+pydantic[email]
  
 # --- Database / ORM / migrations ---
 sqlalchemy
@@ -21,3 +22,5 @@ alembic
 # Display current migration: alembic current
 # Point to previous migration: alembic downgrade -1
 # Discard current migration and point to specific migration: alembic stamp --purge <revision_id>
+
+# Start FastAPI server: python -m uvicorn app.main:app --reload

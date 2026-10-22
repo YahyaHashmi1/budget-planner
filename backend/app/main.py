@@ -4,6 +4,8 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
+from app.routers import paychecks
+from app.routers import users
 
 app = FastAPI(
     title="Paycheck Tracker API",
@@ -36,3 +38,6 @@ def health_check(db: Session = Depends(get_db)):
             status_code=503,
             detail="Database connection failed",
         ) from exc
+
+app.include_router(paychecks.router)
+app.include_router(users.router)
