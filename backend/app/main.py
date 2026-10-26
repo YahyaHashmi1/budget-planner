@@ -1,26 +1,16 @@
-
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
 from app.database import SessionLocal
-from app.routers import paychecks
-from app.routers import users
+from app.routers import paychecks, users, billing_cycles, billing_cycle_payments, expense_categories, expense_items
+from app.dependencies import get_db
 
 app = FastAPI(
     title="Paycheck Tracker API",
     description="API for tracking paychecks, expenses, and recurring bills.",
     version="0.1.0",
 )
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
 
 @app.get("/")
 def root():
@@ -41,3 +31,8 @@ def health_check(db: Session = Depends(get_db)):
 
 app.include_router(paychecks.router)
 app.include_router(users.router)
+app.include_router(expense_categories.router)
+app.include_router(expense_items.router)
+app.include_router(billing_cycles.router)
+app.include_router(billing_cycle_payments.router)
+

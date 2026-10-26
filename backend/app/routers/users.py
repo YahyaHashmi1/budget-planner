@@ -10,19 +10,11 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.user import User
 from app.schemas.user import UserCreate, UserRead
+from app.dependencies import get_db
 
 
 # Groups user-related endpoints under the /users URL prefix.
 router = APIRouter(prefix="/users", tags=["Users"])
-
-
-def get_db():
-    # Opens a database session for this request.
-    db = SessionLocal()
-    try:
-        yield db  # Makes the session available to the endpoint.
-    finally:
-        db.close()  # Always closes the session when the request finishes.
 
 
 @router.post("", response_model=UserRead, status_code=201)

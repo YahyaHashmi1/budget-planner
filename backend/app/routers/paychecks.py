@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 from uuid import UUID
 
@@ -8,19 +7,11 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models.paycheck import Paycheck
 from app.schemas.paycheck import PaycheckCreate, PaycheckRead
+from app.dependencies import get_db
 
 router = APIRouter(prefix="/paychecks", tags=["Paychecks"])
 
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
-
-
-@router.post("", response_model=PaycheckRead, status_code=201)
+@router.post("", response_model=PaycheckRead, status_code=200)
 def create_paycheck(
     paycheck_data: PaycheckCreate,
     db: Session = Depends(get_db),
@@ -48,6 +39,23 @@ def create_paycheck(
             detail="Unable to create paycheck",
         )
 
+    return paycheck
+
+@router.delete("/{paycheck_id}", response_model=PaycheckRead, status_code=200)
+def delete_paycheck(
+    paycheck_id: UUID,
+    db: Session = Depends(get_db),
+):
+    paycheck = db.get(Paycheck, paycheck_id)
+
+    if paycheck is None:
+        raise HTTPException(
+            status_code=404,
+            detail="Paycheck not found",
+        )
+
+    db.delete(paycheck)
+    db.commit()
     return paycheck
 
 

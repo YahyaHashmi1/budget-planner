@@ -16,6 +16,7 @@ alembic
 # Run Postgres commands in Docker: docker exec -it paycheck-tracker-db psql -U paycheck_user -d paycheck_tracker
 # List tables: \dt
 # List columns: \d table_name
+# View all data in a table: SELECT * FROM table_name;
 
 # Generate migration: alembic revision --autogenerate -m "migration message"
 # Push migration: alembic upgrade head
