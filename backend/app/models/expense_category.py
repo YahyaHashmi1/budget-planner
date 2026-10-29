@@ -32,7 +32,7 @@ class ExpenseCategory(Base):
         String(100), nullable=False
     )
     budget: Mapped[Decimal] = mapped_column(
-        Numeric(10, 2), nullable=False
+        Numeric(10, 2), nullable=True
     )
     type: Mapped[CategoryType] = mapped_column(
         SQLEnum(CategoryType, name="category_type"), nullable=False,
