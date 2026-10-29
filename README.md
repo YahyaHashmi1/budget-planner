@@ -2,6 +2,27 @@
 
 A simple personal budgeting application designed around **biweekly pay periods**. The goal is to replace spreadsheets and manual calculations for tracking expenses and recurring bills.
 
+## Running the backend locally
+
+### Prerequisites
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (running)
+- Python 3.12+ (match the version used in development)
+- Git
+
+1. `cd backend`
+2. `cp .env.example .env`   (PowerShell: `Copy-Item .env.example .env`)
+3. `.\setup.ps1`
+4. `docker-compose up -d`
+5. `alembic upgrade head`
+6. `python -m uvicorn app.main:app --reload`
+
+## Run Frontend
+1. Install Node (version in `frontend/.nvmrc`)
+2. `cd frontend`
+3. `npm ci`
+4. `cp .env.example .env`   (PowerShell: `Copy-Item .env.example .env`)
+5. `npm run dev`
+
 ## MVP Features
 
 * Add a new paycheck
