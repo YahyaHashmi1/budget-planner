@@ -1,6 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy import text
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import SessionLocal
 from app.routers import paychecks, users, billing_cycles, billing_cycle_payments, expense_categories, expense_items
@@ -10,6 +11,15 @@ app = FastAPI(
     title="Paycheck Tracker API",
     description="API for tracking paychecks, expenses, and recurring bills.",
     version="0.1.0",
+)
+
+# Allow the local Vite frontend to make requests to the API.
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 @app.get("/")
